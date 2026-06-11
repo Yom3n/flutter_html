@@ -902,7 +902,9 @@ class HtmlRichTextParser extends StatelessWidget {
             break;
           case "li":
             String leadingChar = parseContext.listChar;
-            if (parseContext.blockType == 'ol') {
+            final bool isOrderedList =
+                node.parent?.localName == 'ol' || parseContext.blockType == 'ol';
+            if (isOrderedList) {
               // nextContext will handle nodes under this 'li'
               // but we want to increment the count at this level
               parseContext.listCount += 1;

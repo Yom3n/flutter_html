@@ -32,6 +32,29 @@ void main() {
     );
   });
 
+  testWidgets("Check that ordered list markers are numeric in RichText parser",
+      (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Html(
+            data: "<ol><li>Coffee</li><li>Tea</li></ol>",
+            useRichText: true,
+          ),
+        ),
+      ),
+    );
+
+    final Iterable<RichText> richTextWidgets =
+        tester.widgetList<RichText>(find.byType(RichText));
+    final String allText = richTextWidgets
+        .map((richText) => (richText.text as TextSpan).toPlainText())
+        .join(' ');
+
+    expect(allText.contains('1.'), true);
+    expect(allText.contains('2.'), true);
+  });
+
   //`a` tag tests
 
   testWidgets("Check that `a` tag is rendered by both parsers", (tester) async {
